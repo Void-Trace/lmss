@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="light dark">
+    <title>Library Management System</title>
+
+    <!-- TailwindCSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+        body {
+            background-color: #f8fafc;
+            font-family: system-ui, -apple-system, sans-serif;
+        }
+
+        .card {
+            background-color: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.75rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            padding: 2rem;
+        }
+
+        a {
+            color: #2563eb;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body class="flex items-center justify-center min-h-screen">
+
+    <div class="card w-full max-w-md text-center">
+        <div class="mb-6">
+            <!-- Library Icon -->
+            <svg xmlns="http://www.w3.org/2000/svg" class="mx-auto mb-4 h-12 w-12 text-blue-600" fill="none"
+                viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path d="m16 6 4 14M12 6v14M8 8v12M4 4v16" />
+            </svg>
+            <h1 class="text-3xl font-semibold text-gray-800">LibraryHUb</h1>
+            <p class="text-gray-500">Library Management System</p>
+        </div>
+
+        <form id="loginForm" class="space-y-4">
+            <!-- Login Type -->
+            <div class="text-left">
+                <label for="loginType" class="block text-sm font-medium text-gray-700">Login as</label>
+                <select id="loginType" name="loginType"
+                    class="w-full border rounded-md px-3 py-2 mt-1 focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                    <option value="admin">Admin</option>
+                    <option value="student">Student</option>
+                </select>
+            </div>
+
+            <!-- Username -->
+            <div class="text-left">
+                <label for="username" class="block text-sm font-medium text-gray-700">Username</label>
+                <input id="username" name="username" type="text" required placeholder="Enter username"
+                    class="w-full border rounded-md px-3 py-2 mt-1 focus:ring-2 focus:ring-blue-500 focus:outline-none" />
+            </div>
+
+            <!-- Password -->
+            <div class="text-left">
+                <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+                <input id="password" name="password" type="password" required placeholder="Enter password"
+                    class="w-full border rounded-md px-3 py-2 mt-1 focus:ring-2 focus:ring-blue-500 focus:outline-none" />
+            </div>
+
+            <!-- Remember Me + Forgot Password -->
+            <div class="flex items-center justify-between text-sm">
+                <label class="flex items-center space-x-2">
+                    <input type="checkbox" id="rememberMe" class="h-4 w-4 text-blue-600 rounded border-gray-300" />
+                    <span class="text-gray-700">Remember me</span>
+                </label>
+                <a href="forgot-password.html" class="text-blue-600 hover:underline">Forgot password?</a>
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit"
+                class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-md font-medium flex items-center justify-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor" stroke-width="2">
+                    <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
+                    <circle cx="12" cy="7" r="4" />
+                </svg>
+                Login
+            </button>
+        </form>
+
+
+
+        <!-- Register Link -->
+        <div class="mt-6 text-sm text-gray-600">
+            <p>Don’t have an account?
+                <a href="register.html" class="font-medium text-blue-600 hover:underline">Register</a>
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // Load saved username if "Remember Me" was checked
+        window.addEventListener("DOMContentLoaded", () => {
+            const savedUser = localStorage.getItem("rememberedUser");
+            const savedType = localStorage.getItem("rememberedType");
+            if (savedUser && savedType) {
+                document.getElementById("username").value = savedUser;
+                document.getElementById("loginType").value = savedType;
+                document.getElementById("rememberMe").checked = true;
+            }
+        });
+
+        // Handle login
+        document.getElementById("loginForm").addEventListener("submit", function (e) {
+            e.preventDefault();
+            const user = document.getElementById("username").value.trim();
+            const pass = document.getElementById("password").value.trim();
+            const type = document.getElementById("loginType").value;
+            const remember = document.getElementById("rememberMe").checked;
+
+            // Demo credentials
+            const adminCreds = user === "admin" && pass === "admin" && type === "admin";
+            const studentCreds = user === "student" && pass === "student" && type === "student";
+
+            if (adminCreds) {
+                alert("✅ Admin login successful! Redirecting to dashboard...");
+                if (remember) {
+                    localStorage.setItem("rememberedUser", user);
+                    localStorage.setItem("rememberedType", type);
+                } else {
+                    localStorage.removeItem("rememberedUser");
+                    localStorage.removeItem("rememberedType");
+                }
+                window.location.href = "admin-dashboard.html"; // replace with your admin page
+            }
+            else if (studentCreds) {
+                alert("✅ Student login successful! Redirecting to student page...");
+                if (remember) {
+                    localStorage.setItem("rememberedUser", user);
+                    localStorage.setItem("rememberedType", type);
+                } else {
+                    localStorage.removeItem("rememberedUser");
+                    localStorage.removeItem("rememberedType");
+                }
+                window.location.href = "student-dashboard.html"; // replace with your student page
+            }
+            else {
+                alert("❌ Invalid credentials or role. Please try again.");
+            }
+        });
+    </script>
+
+</body>
+
+</html>

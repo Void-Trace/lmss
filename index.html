@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LibraryHub - Library Management System</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        deepBlue: "#0b132b",
+                        softPurple: "#a29bfe",
+                    },
+                },
+            },
+        };
+    </script>
+
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
+</head>
+
+<body
+    class="bg-gradient-to-br from-slate-50 via-white to-blue-50 text-slate-800 dark:from-slate-950 dark:via-slate-900 dark:to-slate-800 dark:text-white min-h-screen transition-colors duration-300"
+>
+    <header
+        class="border-b bg-white/80 dark:bg-slate-900/80 backdrop-blur-lg sticky top-0 z-50 shadow-sm"
+    >
+        <div
+            class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between"
+        >
+            <div class="flex items-center gap-3">
+                <div
+                    class="p-2 bg-gradient-to-br from-blue-600 to-purple-600 rounded-xl shadow-lg"
+                >
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        class="w-6 h-6 text-white"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                    >
+                        <path d="M12 7v14"></path>
+                        <path
+                            d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"
+                        ></path>
+                    </svg>
+                </div>
+                <div>
+                    <h1
+                        class="font-bold text-xl bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent"
+                    >
+                        LibraryHub
+                    </h1>
+                    <p class="text-sm text-gray-500 dark:text-gray-400 -mt-1">
+                        Management System
+                    </p>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-4">
+                <a
+                    href="login.html"
+                    class="border border-gray-300 dark:border-gray-600 px-4 py-2 rounded-lg text-sm font-medium hover:bg-gradient-to-r from-blue-600 to-purple-600  dark:hover:bg-gradient-to-r from-blue-600 to-purple-600  transition hover:text-white dark:hover:text-white"
+                >
+                    Student
+                </a>
+                <a
+                    href="login.html"
+                    class="border border-gray-300 dark:border-gray-600 px-4 py-2 rounded-lg text-sm font-medium hover:bg-gradient-to-r from-blue-600 to-purple-600  dark:hover:bg-gradient-to-r from-blue-600 to-purple-600  transition hover:text-white dark:hover:text-white"
+                >
+                    Admin
+                </a>
+                
+                <button
+                    id="theme-toggle"
+                    aria-label="Toggle theme"
+                    class="p-2 rounded-lg border border-gray-300 dark:border-gray-700 hover:bg-gradient-to-r from-blue-600 to-purple-600  dark:hover:bg-gray-800 transition"
+                >
+                    <svg
+                        id="sun-icon"
+                        xmlns="http://www.w3.org/2000/svg"
+                        class="h-5 w-5 text-amber-500"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                    >
+                        <circle cx="12" cy="12" r="4"></circle>
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="M12 2v2m0 16v2m10-10h-2M4 12H2m15.66 6.34-1.41-1.41M6.34 6.34 4.93 4.93m0 14.14 1.41-1.41M17.66 6.34l1.41-1.41"
+                        />
+                    </svg>
+                    <svg
+                        id="moon-icon"
+                        xmlns="http://www.w3.org/2000/svg"
+                        class="h-5 w-5 text-slate-300 hidden"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"
+                        />
+                    </svg>
+                </button>
+
+                <div class="relative">
+                    <button
+                        id="profile-btn"
+                        aria-label="Open user menu"
+                        aria-haspopup="true"
+                        aria-expanded="false"
+                        class="rounded-full bg-gradient-to-r from-purple-500 to-blue-600 w-10 h-10 flex items-center justify-center text-white font-semibold shadow-md hover:opacity-90"
+                    >
+                        AP
+                    </button>
+
+                    <div
+                        id="profile-menu"
+                        class="hidden absolute right-0 mt-2 w-64 bg-white dark:bg-slate-800 rounded-xl shadow-lg border border-gray-100 dark:border-gray-700 overflow-hidden z-20"
+                    >
+                        <div class="px-4 py-3 border-b dark:border-gray-700">
+                            <p class="font-semibold text-gray-800 dark:text-gray-100">
+                                Anurag Patel
+                            </p>
+                            <p class="text-sm text-gray-500 dark:text-gray-400">
+                                Anurag01@gmail.com
+                            </p>
+                            <span
+                                class="mt-2 inline-block bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 text-xs font-medium px-2 py-1 rounded-lg"
+                                >Student</span
+                            >
+                        </div>
+
+                        <ul class="py-2 text-sm text-gray-700 dark:text-gray-200">
+                            <li>
+                                <a
+                                    href="#"
+                                    class="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700"
+                                    ><svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        class="h-4 w-4"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                        stroke="currentColor"
+                                        stroke-width="2"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                    >
+                                        <path
+                                            d="M5.121 17.804A4 4 0 0 1 7 17h10a4 4 0 0 1 1.879.804M12 7a4 4 0 1 1-8 0 4 4 0 0 1 8 0z"
+                                        />
+                                    </svg>
+                                    Profile</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="#"
+                                    class="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700"
+                                    ><svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        class="h-4 w-4"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                        stroke="currentColor"
+                                        stroke-width="2"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                    >
+                                        <path
+                                            d="M10.325 4.317a4.992 4.992 0 0 0 3.35 0l.149-.049a5 5 0 0 1 6.176 6.176l-.049.149a4.992 4.992 0 0 0 0 3.35l.049.149a5 5 0 0 1-6.176 6.176l-.149-.049a4.992 4.992 0 0 0-3.35 0l-.149.049a5 5 0 0 1-6.176-6.176l.049-.149a4.992 4.992 0 0 0 0-3.35l-.049-.149a5 5 0 0 1 6.176-6.176z"
+                                        />
+                                    </svg>
+                                    Settings</a
+                                >
+                            </li>
+                        </ul>
+
+                        <div class="border-t dark:border-gray-700">
+                            <a
+                                href="login.html"
+                                class="flex items-center gap-2 px-4 py-2 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/30 font-medium"
+                            >
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    class="h-4 w-4"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor"
+                                    stroke-width="2"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                >
+                                    <path
+                                        d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M17 16l4-4-4-4M21 12H9"
+                                    />
+                                </svg>
+                                Log out
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-6xl mx-auto p-6 space-y-8">
+        <section
+            class="bg-gradient-to-br from-blue-600 via-purple-600 to-indigo-700 rounded-2xl text-white shadow-2xl p-8"
+        >
+            <div class="flex flex-col sm:flex-row justify-between items-center">
+                <div>
+                    <h2 class="text-3xl font-bold mb-2">
+                        Welcome back, Anurag Patel! 👋
+                    </h2>
+                    <p class="text-blue-100">
+                        Student ID: STU24154088 • Member since Oct 2025
+                    </p>
+                    <span
+                        class="inline-block bg-white/20 px-3 py-1 mt-3 text-sm rounded-md border border-white/30"
+                        >Active Member</span
+                    >
+                </div>
+                <div class="text-center sm:text-right mt-6 sm:mt-0">
+                    <p class="text-blue-100 text-sm">Books borrowed</p>
+                    <p class="text-5xl font-bold">7</p>
+                    <p class="text-blue-100 text-sm">Current loans</p>
+                </div>
+            </div>
+        </section>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div class="lg:col-span-2 space-y-8">
+                
+                <section class="bg-white/70 dark:bg-slate-800/70 backdrop-blur-sm rounded-2xl shadow-lg p-6 space-y-4">
+                    <h3 class="text-xl font-semibold flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 p-1 rounded-lg bg-purple-100 text-purple-600 dark:bg-purple-900/30" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="m21 21-4.34-4.34"></path><circle cx="11" cy="11" r="8"></circle>
+                        </svg>
+                        Search & Browse Books
+                    </h3>
+                    <p class="text-gray-500 dark:text-gray-400 text-sm -mt-3">Discover and reserve books from our extensive collection</p>
+
+                    <div class="flex gap-4">
+                        <div class="relative w-full">
+                            <input type="text" placeholder="Search by title, author, or ISBN..." class="w-full pl-4 pr-16 py-3 border border-gray-300 dark:border-gray-700 bg-white dark:bg-slate-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                            <button class="absolute right-2 top-1/2 -translate-y-1/2 p-2 rounded-lg text-sm font-medium hover:bg-gray-100 dark:hover:bg-gray-700 transition flex items-center gap-1 text-gray-600 dark:text-gray-300 border border-transparent">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 3H2L10 12.46V19L14 21V12.46L22 3Z"/></svg>
+                                Filters
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="flex flex-wrap gap-2 pt-2">
+                        <span class="px-3 py-1 text-sm rounded-full bg-green-100 text-green-700 dark:bg-green-900/50 dark:text-green-300 flex items-center gap-1">
+                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M5 13l4 4L19 7"/></svg> Available
+                        </span>
+                        <span class="px-3 py-1 text-sm rounded-full bg-blue-100 text-blue-700 dark:bg-blue-900/50 dark:text-blue-300 flex items-center gap-1">
+                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2Z"/></svg> Science
+                        </span>
+                        <span class="px-3 py-1 text-sm rounded-full bg-purple-100 text-purple-700 dark:bg-purple-900/50 dark:text-purple-300 flex items-center gap-1">
+                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg> Technology
+                        </span>
+                        <span class="px-3 py-1 text-sm rounded-full bg-orange-100 text-orange-700 dark:bg-orange-900/50 dark:text-orange-300 flex items-center gap-1">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M18 20V4H6V20M14 20V4M10 20V4"/></svg> Fiction
+                        </span>
+                    </div>
+                </section>
+<section>
+  <h3 class="text-2xl font-bold mb-4 flex items-center gap-3">
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+      <path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2Z"/>
+    </svg>
+    Your Borrowed Books
+  </h3>
+  <p class="text-gray-500 dark:text-gray-400 text-sm -mt-3 mb-4">Manage your current loans and renewals</p>
+  
+  <div class="space-y-4">
+    <!-- Book 1 -->
+    <div class="bg-white dark:bg-slate-800 rounded-xl shadow-md p-4 flex items-start gap-4 hover:shadow-lg transition">
+      <img
+        src="https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=150&q=60"
+        alt="Introduction to Machine Learning"
+        class="w-16 h-24 object-cover rounded-lg shadow-sm"
+      />
+      <div class="flex-grow">
+        <h4 class="font-semibold text-lg flex items-center gap-2">
+          <span class="h-2 w-2 bg-emerald-500 rounded-full"></span>
+          Introduction to Machine Learning
+        </h4>
+        <p class="text-gray-600 dark:text-gray-400 text-sm">by Ethem Alpaydin</p>
+        <div class="flex items-center gap-3 mt-2 text-sm">
+          <span class="flex items-center gap-1 px-2 py-1 bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300 rounded-md">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path d="M8 7V3m8 4V3m-4 17a4 4 0 0 1-4-4v-4h8v4a4 4 0 0 1-4 4Z"/>
+            </svg>
+            Due: 2024-09-15
+          </span>
+          <span class="font-medium text-emerald-600 dark:text-emerald-400 px-2 py-1 bg-emerald-100 dark:bg-emerald-900/30 rounded-md">
+            6 days left
+          </span>
+        </div>
+      </div>
+      <div class="flex flex-col gap-2 flex-shrink-0">
+        <button class="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white px-4 py-2 rounded-lg text-sm transition font-medium">
+          Renew
+        </button>
+        <button class="border border-gray-300 dark:border-gray-700 px-4 py-2 rounded-lg text-sm hover:bg-gray-100 dark:hover:bg-gray-700 transition">
+          Details
+        </button>
+      </div>
+    </div>
+
+    <!-- Book 2 -->
+    <div class="bg-white dark:bg-slate-800 rounded-xl shadow-md p-4 flex items-start gap-4 hover:shadow-lg transition">
+      <img
+        src="https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&w=150&q=60"
+        alt="Clean Code"
+        class="w-16 h-24 object-cover rounded-lg shadow-sm"
+      />
+      <div class="flex-grow">
+        <h4 class="font-semibold text-lg flex items-center gap-2">
+          <span class="h-2 w-2 bg-emerald-500 rounded-full"></span>
+          Clean Code
+        </h4>
+        <p class="text-gray-600 dark:text-gray-400 text-sm">by Robert C. Martin</p>
+        <div class="flex items-center gap-3 mt-2 text-sm">
+          <span class="flex items-center gap-1 px-2 py-1 bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300 rounded-md">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path d="M8 7V3m8 4V3m-4 17a4 4 0 0 1-4-4v-4h8v4a4 4 0 0 1-4 4Z"/>
+            </svg>
+            Due: 2024-09-12
+          </span>
+          <span class="font-medium text-red-600 dark:text-red-400 px-2 py-1 bg-red-100 dark:bg-red-900/30 rounded-md flex items-center gap-1">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path d="M12 9v2m0 4h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+            </svg>
+            3 days left
+          </span>
+        </div>
+      </div>
+      <div class="flex flex-col gap-2 flex-shrink-0">
+        <button class="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white px-4 py-2 rounded-lg text-sm transition font-medium">
+          Renew
+        </button>
+        <button class="border border-gray-300 dark:border-gray-700 px-4 py-2 rounded-lg text-sm hover:bg-gray-100 dark:hover:bg-gray-700 transition">
+          Details
+        </button>
+      </div>
+    </div>
+
+    <!-- Book 3 -->
+    <div class="bg-white dark:bg-slate-800 rounded-xl shadow-md p-4 flex items-start gap-4 hover:shadow-lg transition">
+      <img
+        src="https://images.unsplash.com/photo-1495446815901-a7297e633e8d?auto=format&fit=crop&w=150&q=60"
+        alt="Design Patterns"
+        class="w-16 h-24 object-cover rounded-lg shadow-sm"
+      />
+      <div class="flex-grow">
+        <h4 class="font-semibold text-lg flex items-center gap-2">
+          <span class="h-2 w-2 bg-red-500 rounded-full"></span>
+          Design Patterns
+        </h4>
+        <p class="text-gray-600 dark:text-gray-400 text-sm">by Gang of Four</p>
+        <div class="flex items-center gap-3 mt-2 text-sm">
+          <span class="flex items-center gap-1 px-2 py-1 bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300 rounded-md">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path d="M8 7V3m8 4V3m-4 17a4 4 0 0 1-4-4v-4h8v4a4 4 0 0 1-4 4Z"/>
+            </svg>
+            Due: 2024-09-10
+          </span>
+          <span class="font-medium text-red-600 dark:text-red-400 px-2 py-1 bg-red-100 dark:bg-red-900/30 rounded-md flex items-center gap-1">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path d="M12 9v2m0 4h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+            </svg>
+            1 day left
+          </span>
+        </div>
+      </div>
+      <div class="flex flex-col gap-2 flex-shrink-0">
+        <button class="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white px-4 py-2 rounded-lg text-sm transition font-medium">
+          Renew
+        </button>
+        <button class="border border-gray-300 dark:border-gray-700 px-4 py-2 rounded-lg text-sm hover:bg-gray-100 dark:hover:bg-gray-700 transition">
+          Details
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+                
+
+                <section>
+                    <h3 class="text-2xl font-bold mb-4 flex items-center gap-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2Z"/></svg>
+                        Recommended for You
+                    </h3>
+                    <p class="text-gray-500 dark:text-gray-400 text-sm -mt-3 mb-4"> book suggestions based on your reading history</p>
+
+                    <div class="grid gap-6 sm:grid-cols-2">
+                        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-md p-5 flex flex-col hover:shadow-lg transition">
+                            <div class="flex items-start gap-4 mb-3">
+                                <div class="w-12 h-12 bg-gray-200 dark:bg-gray-700 rounded-lg flex-shrink-0 
+
+[Image of code on a computer screen]
+">
+                                    </div>
+                                <div>
+                                    <h4 class="font-semibold text-lg">Deep Learning</h4>
+                                    <p class="text-gray-600 dark:text-gray-400 text-sm">Ian Goodfellow</p>
+                                    <div class="flex items-center gap-1 text-amber-500 mt-1">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 fill-amber-500" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 18l-6.18 3.24L7 14.14l-5-4.87 6.91-1.01L12 2Z"/></svg>
+                                        4.5
+                                    </div>
+                                </div>
+                            </div>
+                            <p class="text-sm text-blue-600 dark:text-blue-400 mb-4">Based on your interest in Machine Learning</p>
+                            <button class="mt-auto border border-blue-500 text-blue-600 dark:text-blue-400 dark:border-blue-700 px-4 py-2 rounded-lg text-sm hover:bg-blue-50 dark:hover:bg-blue-900/30 transition flex items-center justify-center gap-2">
+                                
+                                Reserve
+                            </button>
+                        </div>
+
+                        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-md p-5 flex flex-col hover:shadow-lg transition">
+                            <div class="flex items-start gap-4 mb-3">
+                                <div class="w-12 h-12 bg-gray-200 dark:bg-gray-700 rounded-full flex-shrink-0 ">
+                                    </div>
+                                <div>
+                                    <h4 class="font-semibold text-lg">The Pragmatic Programmer</h4>
+                                    <p class="text-gray-600 dark:text-gray-400 text-sm">David Thomas</p>
+                                    <div class="flex items-center gap-1 text-amber-500 mt-1">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 fill-amber-500" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 18l-6.18 3.24L7 14.14l-5-4.87 6.91-1.01L12 2Z"/></svg>
+                                        4.8
+                                    </div>
+                                </div>
+                            </div>
+                            <p class="text-sm text-blue-600 dark:text-blue-400 mb-4">Readers of Clean Code also enjoyed</p>
+                            <button class="mt-auto border border-blue-500 text-blue-600 dark:text-blue-400 dark:border-blue-700 px-4 py-2 rounded-lg text-sm hover:bg-blue-50 dark:hover:bg-blue-900/30 transition flex items-center justify-center gap-2">
+                                
+                                Reserve
+                            </button>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <aside class="lg:col-span-1 space-y-6">
+                
+                <section class="bg-white/70 dark:bg-slate-800/70 backdrop-blur-sm rounded-2xl shadow-lg p-6">
+                    <h3 class="text-xl font-semibold mb-4 flex items-center gap-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-orange-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86a2 2 0 0 0 3.42 0L12 6l-1.71-2.14Z"/><path d="M18 10a6 6 0 0 0-12 0v2c0 2.21-1.79 4-4 4h20c-2.21 0-4-1.79-4-4v-2a6 6 0 0 0-12 0Z"/><path d="M12 21a2 2 0 0 1-2-2"/></svg>
+                        Notifications
+                    </h3>
+                    <div class="space-y-3">
+                        <div class="p-4 rounded-xl border-l-4 border-orange-500 bg-orange-50 dark:bg-orange-900/30">
+                            <div class="flex items-start gap-3">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-orange-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M12 9v2m0 4h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/></svg>
+                                <div>
+                                    <p class="font-medium text-gray-800 dark:text-gray-100">Design Patterns is due tomorrow</p>
+                                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">2 hours ago</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="p-4 rounded-xl border-l-4 border-blue-500 bg-blue-50 dark:bg-blue-900/30">
+                            <div class="flex items-start gap-3">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2Z"/></svg>
+                                <div>
+                                    <p class="font-medium text-gray-800 dark:text-gray-100">New book available: React Deep Dive</p>
+                                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">1 day ago</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="p-4 rounded-xl border-l-4 border-emerald-500 bg-emerald-50 dark:bg-emerald-900/30">
+                            <div class="flex items-start gap-3">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-emerald-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M5 13l4 4L19 7"/></svg>
+                                <div>
+                                    <p class="font-medium text-gray-800 dark:text-gray-100">Your membership is active until **Jan 2026**</p>
+                                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">3 days ago</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </aside>
+        </div>
+    </main>
+
+    <footer class="bg-slate-900 text-gray-300 mt-12 py-6">
+        <div
+            class="max-w-6xl mx-auto px-6 flex flex-col sm:flex-row justify-between items-center gap-4"
+        >
+            <p>© 2025 LibraryHub. All rights reserved.</p>
+            <div class="flex gap-4 text-sm">
+                <a href="#" class="hover:text-white transition">Privacy Policy</a>
+                <a href="#" class="hover:text-white transition">Terms of Service</a>
+                <a href="#" class="hover:text-white transition">Contact</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const toggleBtn = document.getElementById("theme-toggle");
+        const html = document.documentElement;
+        const sun = document.getElementById("sun-icon");
+        const moon = document.getElementById("moon-icon");
+
+        // Function to set theme
+        function setTheme(theme) {
+            if (theme === "dark") {
+                html.classList.add("dark");
+                sun.classList.add("hidden");
+                moon.classList.remove("hidden");
+            } else {
+                html.classList.remove("dark");
+                sun.classList.remove("hidden");
+                moon.classList.add("hidden");
+            }
+            localStorage.setItem("theme", theme);
+        }
+
+        // Load saved theme or default to system preference
+        const savedTheme = localStorage.getItem("theme");
+        if (savedTheme) {
+            setTheme(savedTheme);
+        } else if (
+            window.matchMedia &&
+            window.matchMedia("(prefers-color-scheme: dark)").matches
+        ) {
+            // Check system preference if no theme is saved
+            setTheme("dark");
+        } else {
+            setTheme("light");
+        }
+
+        // Toggle theme on button click
+        toggleBtn.addEventListener("click", () => {
+            const isDark = html.classList.toggle("dark");
+            setTheme(isDark ? "dark" : "light");
+        });
+    </script>
+
+    <script>
+        const profileBtn = document.getElementById("profile-btn");
+        const profileMenu = document.getElementById("profile-menu");
+
+        profileBtn.addEventListener("click", () => {
+            const isHidden = profileMenu.classList.toggle("hidden");
+            // Update aria-expanded for accessibility
+            profileBtn.setAttribute("aria-expanded", String(!isHidden));
+        });
+
+        // Hide menu if clicked outside
+        window.addEventListener("click", (e) => {
+            if (!profileBtn.contains(e.target) && !profileMenu.contains(e.target)) {
+                profileMenu.classList.add("hidden");
+                profileBtn.setAttribute("aria-expanded", "false"); // Reset aria-expanded
+            }
+        });
+    </script>
+</body>
+</html>
